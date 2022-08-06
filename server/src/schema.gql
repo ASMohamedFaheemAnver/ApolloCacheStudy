@@ -2,10 +2,32 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type User {
+  name: String!
+  age: Float!
+}
+
 type Message {
   message: String!
 }
 
 type Query {
   root: Message!
+  getAllUsers: [User!]!
+}
+
+type Mutation {
+  createUser(createUserDto: CreateUserDto!): User!
+  updateUser(updateUserDto: UpdateUserDto!): User!
+}
+
+input CreateUserDto {
+  name: String!
+  age: Float!
+}
+
+input UpdateUserDto {
+  id: ID!
+  name: String!
+  age: Float!
 }
