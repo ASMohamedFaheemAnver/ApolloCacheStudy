@@ -11,16 +11,20 @@ export class AppService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
   createUser(createUserDto: CreateUserDto) {
-    this.logger.log(createUserDto);
+    this.logger.log(this.createUser.name, createUserDto);
     const newUser = new this.userModel(createUserDto);
     return newUser.save();
   }
 
-  getAllUsers() {
-    return this.userModel.find().exec();
+  async getAllUsers() {
+    this.logger.log(this.getAllUsers.name);
+    const users = await this.userModel.find().exec();
+    this.logger.log(this.getAllUsers.name, users);
+    return users;
   }
 
   updateUser(updateUserDto: UpdateUserDto) {
+    this.logger.log(this.getAllUsers.name, updateUserDto);
     return this.userModel.findOneAndUpdate(
       { id: updateUserDto.id },
       updateUserDto,

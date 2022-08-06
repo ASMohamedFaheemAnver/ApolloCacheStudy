@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import { ROOT_QUERY } from "graphql/query/root";
+import { ROOT_QUERY } from "graphql/queries/root";
 
 const Root = () => {
   const { loading, data } = useQuery(ROOT_QUERY);
