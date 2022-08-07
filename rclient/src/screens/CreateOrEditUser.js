@@ -42,8 +42,8 @@ const CreateOrEditUser = ({ user, setUser }) => {
                   query: GET_ALL_USERS_QUERY,
                   data: {
                     getAllUsers: [
-                      data?.createUser,
                       ...cachedUsers?.getAllUsers,
+                      data?.createUser,
                     ],
                   },
                 });

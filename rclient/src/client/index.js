@@ -8,6 +8,13 @@ const client = new ApolloClient({
       User: {
         keyFields: ["_id"],
       },
+      Query: {
+        fields: {
+          getAllUsers: {
+            merge: (existing, incoming) => incoming,
+          },
+        },
+      },
     },
   }),
 });

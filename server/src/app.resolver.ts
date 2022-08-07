@@ -1,4 +1,5 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { IsAlpha, isEmail, IsEmail } from 'class-validator';
 import { AppService } from './app.service';
 import { Message } from './common/message';
 import { CreateUserDto } from './dtos/create-user-dto';
@@ -28,5 +29,13 @@ export class AppResolver {
   @Mutation((_) => User)
   updateUser(@Args('updateUserDto') updateUserDto: UpdateUserDto) {
     return this.appService.updateUser(updateUserDto);
+  }
+
+  @Mutation((_) => User)
+  deleteUser(
+    @Args('userId', { type: () => ID, nullable: false })
+    userId: string,
+  ) {
+    return this.appService.deleteUser(userId);
   }
 }

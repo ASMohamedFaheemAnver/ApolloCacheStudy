@@ -33,4 +33,12 @@ export class AppService {
     this.logger.log(updatedUser);
     return updatedUser;
   }
+
+  async deleteUser(userId: string) {
+    this.logger.log(this.deleteUser.name, { userId });
+    const response = await this.userModel.findOneAndDelete({ _id: userId });
+    this.logger.log(this.deleteUser.name, { response });
+    // return { message: 'deleted' };
+    return response;
+  }
 }
