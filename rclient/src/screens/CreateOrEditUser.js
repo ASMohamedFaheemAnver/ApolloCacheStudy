@@ -1,16 +1,20 @@
 import { useMutation } from "@apollo/client";
-import { CREATE_USERS_MUTATION } from "graphql/mutations/user";
+import {
+  CREATE_USERS_MUTATION,
+  UPDATE_USERS_MUTATION,
+} from "graphql/mutations/user";
 
-const CreateUser = ({ user }) => {
-  console.log({ invoker: CreateUser.name });
+const CreateOrEditUser = ({ user, setUser }) => {
+  console.log({ invoker: CreateOrEditUser.name });
   const [createUserMutation, { data, error }] = useMutation(
     CREATE_USERS_MUTATION
   );
+  const [updateUserMutation] = useMutation(UPDATE_USERS_MUTATION);
   if (data) {
-    console.log({ invoker: CreateUser.name, data });
+    console.log({ invoker: CreateOrEditUser.name, data });
   }
   if (error) {
-    console.log({ invoker: CreateUser.name, error });
+    console.log({ invoker: CreateOrEditUser.name, error });
   }
   return (
     <div>
@@ -20,7 +24,17 @@ const CreateUser = ({ user }) => {
           const elements = event.target.elements;
           const name = elements.name.value;
           const age = elements.age.value;
-          createUserMutation({ variables: { name, age: parseInt(age) } });
+          if (typeof user?.age == "number") {
+            updateUserMutation({
+              variables: {
+                updateUserDto: { id: user._id, name, age: parseInt(age) },
+              },
+            });
+          } else {
+            createUserMutation({
+              variables: { createUserDto: { name, age: parseInt(age) } },
+            });
+          }
         }}
         style={{
           display: "flex",
@@ -40,9 +54,18 @@ const CreateUser = ({ user }) => {
         <button type="submit">
           {typeof user?.age == "number" ? "Update User" : "Create User"}
         </button>
+        <button
+          style={{ marginTop: 20 }}
+          onClick={() => {
+            setUser();
+          }}
+          type="reset"
+        >
+          Clear
+        </button>
       </form>
     </div>
   );
 };
 
-export default CreateUser;
+export default CreateOrEditUser;

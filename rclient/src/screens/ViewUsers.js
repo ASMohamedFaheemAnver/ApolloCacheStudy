@@ -17,7 +17,7 @@ const ViewUsers = ({ setUser }) => {
             key={user?.name}
           >
             <label style={{ marginBottom: 20 }}>
-              {user.name}, {user.age}
+              {user._id} , {user.name} , {user.age}
             </label>
             <button
               onClick={() => {
