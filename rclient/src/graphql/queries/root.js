@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
 export const ROOT_QUERY = gql`
-  query {
+  query root {
     root {
       message
     }

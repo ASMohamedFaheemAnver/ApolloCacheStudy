@@ -14,7 +14,7 @@ const ViewUsers = ({ setUser }) => {
               justifyContent: "center",
               alignItems: "center",
             }}
-            key={user?.name}
+            key={user?._id}
           >
             <label style={{ marginBottom: 20 }}>
               {user._id} , {user.name} , {user.age}

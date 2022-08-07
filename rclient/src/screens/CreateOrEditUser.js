@@ -34,6 +34,20 @@ const CreateOrEditUser = ({ user, setUser }) => {
           } else {
             createUserMutation({
               variables: { createUserDto: { name, age: parseInt(age) } },
+              update: (cache, { data }) => {
+                const cachedUsers = cache.readQuery({
+                  query: GET_ALL_USERS_QUERY,
+                });
+                cache.writeQuery({
+                  query: GET_ALL_USERS_QUERY,
+                  data: {
+                    getAllUsers: [
+                      data?.createUser,
+                      ...cachedUsers?.getAllUsers,
+                    ],
+                  },
+                });
+              },
             });
           }
         }}

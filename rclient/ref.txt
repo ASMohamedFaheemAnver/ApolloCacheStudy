@@ -1,0 +1,2 @@
+# Configuring the Apollo Client cache
+# https://www.apollographql.com/docs/react/caching/cache-configuration
