@@ -45,7 +45,6 @@ input UpdateUserDto {
 
 input CreateChallengeDto {
   name: String!
-  participants: [ID!]!
 }
 
 input UpdateChallengeDto {

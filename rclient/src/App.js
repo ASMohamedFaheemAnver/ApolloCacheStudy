@@ -10,6 +10,7 @@ import ViewUsers from "screens/ViewUsers";
 function App() {
   console.log({ invoker: App.name });
   const [user, setUser] = useState();
+  const [challenge, setChallenge] = useState();
   return (
     <ApolloProvider client={client}>
       <Root />
@@ -30,8 +31,11 @@ function App() {
       >
         Challenge Component
       </div>
-      <ViewChallenges />
-      <CreateOrEditChallenge />
+      <ViewChallenges setChallenge={setChallenge} />
+      <CreateOrEditChallenge
+        setChallenge={setChallenge}
+        challenge={challenge}
+      />
     </ApolloProvider>
   );
 }

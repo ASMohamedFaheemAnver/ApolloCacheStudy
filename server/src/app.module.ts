@@ -7,6 +7,7 @@ import { AppResolver } from './app.resolver';
 import { AppService } from './app.service';
 import { Challenge, ChallengeSchema } from './schemas/challenge.schema';
 import { User, UserSchema } from './schemas/user.schema';
+import * as mongoose from 'mongoose';
 
 @Module({
   imports: [
@@ -24,4 +25,8 @@ import { User, UserSchema } from './schemas/user.schema';
   controllers: [],
   providers: [AppResolver, AppService],
 })
-export class AppModule {}
+export class AppModule {
+  constructor() {
+    // mongoose.set('debug', true);
+  }
+}

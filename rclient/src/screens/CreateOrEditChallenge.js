@@ -1,16 +1,21 @@
 import { useMutation } from "@apollo/client";
 import {
-  CREATE_USERS_MUTATION,
-  UPDATE_USERS_MUTATION,
-} from "graphql/mutations/user";
+  CREATE_CHALLENGE_MUTATION,
+  UPDATE_CHALLENGE_MUTATION,
+} from "graphql/mutations/challenge";
+import { GET_ALL_CHALLENGES_QUERY } from "graphql/queries/challenge";
+import { useEffect } from "react";
 
 const CreateOrEditChallenge = ({ challenge, setChallenge }) => {
-  console.log({ invoker: CreateOrEditChallenge.name });
+  useEffect(() => {
+    console.log({ invoker: CreateOrEditChallenge.name });
+  }, []);
 
-  const [createUserMutation, { data, error }] = useMutation(
-    CREATE_USERS_MUTATION
+  const [createChallengeMutation, { data }] = useMutation(
+    CREATE_CHALLENGE_MUTATION
   );
-  const [updateUserMutation] = useMutation(UPDATE_USERS_MUTATION);
+  const [updateChallengeMutation] = useMutation(UPDATE_CHALLENGE_MUTATION);
+
   if (data) {
     console.log({ invoker: CreateOrEditChallenge.name, data });
   }
@@ -24,29 +29,35 @@ const CreateOrEditChallenge = ({ challenge, setChallenge }) => {
           const name = elements.name.value;
           const participants = elements.participants.value;
           if (typeof challenge?.name == "string") {
-            // updateUserMutation({
-            //   variables: {
-            //     updateUserDto: { id: user._id, age: parseInt(age) },
-            //   },
-            // });
+            updateChallengeMutation({
+              variables: {
+                updateChallengeDto: {
+                  id: challenge._id,
+                  name,
+                  participants: participants
+                    .split(",")
+                    .filter((participant) => participant),
+                },
+              },
+            });
           } else {
-            // createUserMutation({
-            //   variables: { createUserDto: { name, age: parseInt(age) } },
-            //   update: (cache, { data }) => {
-            //     const cachedUsers = cache.readQuery({
-            //       query: GET_ALL_USERS_QUERY,
-            //     });
-            //     cache.writeQuery({
-            //       query: GET_ALL_USERS_QUERY,
-            //       data: {
-            //         getAllUsers: [
-            //           data?.createUser,
-            //           ...cachedUsers?.getAllUsers,
-            //         ],
-            //       },
-            //     });
-            //   },
-            // });
+            createChallengeMutation({
+              variables: { createChallengeDto: { name } },
+              update: (cache, { data }) => {
+                const cachedChallenges = cache.readQuery({
+                  query: GET_ALL_CHALLENGES_QUERY,
+                });
+                cache.writeQuery({
+                  query: GET_ALL_CHALLENGES_QUERY,
+                  data: {
+                    getAllChallenges: [
+                      ...cachedChallenges?.getAllChallenges,
+                      data?.createChallenge,
+                    ],
+                  },
+                });
+              },
+            });
           }
         }}
         style={{
@@ -58,18 +69,20 @@ const CreateOrEditChallenge = ({ challenge, setChallenge }) => {
       >
         <div style={{ marginBottom: 20 }}>
           <label>Enter challenge name : </label>
-          <input
-            disabled={typeof challenge?.participants == "number"}
-            name="name"
-            defaultValue={challenge?.name}
-          />
+          <input name="name" defaultValue={challenge?.name} />
         </div>
         <div style={{ marginBottom: 20 }}>
           <label>Enter participants ids separated by comma : </label>
-          <input name="participants" defaultValue={challenge?.participants} />
+          <input
+            disabled={typeof challenge?.name !== "string"}
+            name="participants"
+            defaultValue={challenge?.participants
+              .map((participant) => participant._id)
+              .join(",")}
+          />
         </div>
         <button type="submit">
-          {typeof challenge?.name == "number"
+          {typeof challenge?.name === "string"
             ? "Update Challenge"
             : "Create Challenge"}
         </button>

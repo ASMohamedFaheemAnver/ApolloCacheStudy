@@ -7,7 +7,4 @@ export class CreateChallengeDto {
   @IsString()
   @Field()
   name: string;
-
-  @Field((_) => [ID!]!)
-  participants: string[];
 }

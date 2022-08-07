@@ -51,17 +51,36 @@ export class AppService {
 
   async getAllChallenges() {
     this.logger.log(this.getAllChallenges.name);
-    const challenges = await this.challengeModel.find().exec();
+    const challenges = await this.challengeModel
+      .find()
+      .populate('participants')
+      .exec();
     this.logger.log({ challenges });
     return challenges;
   }
 
   async createChallenge(createChallengeDto: CreateChallengeDto) {
     this.logger.log(this.createChallenge.name, { createChallengeDto });
+    const newChallenge = new this.challengeModel(createChallengeDto);
+    return newChallenge.save();
   }
 
   async updateChallenge(updateChallengeDto: UpdateChallengeDto) {
-    this.logger.log(this.updateChallenge.name, { updateChallengeDto });
+    this.logger.log(this.updateChallenge.name, {
+      updateChallengeDto,
+    });
+    const updatedChallenge = await this.challengeModel
+      .findOneAndUpdate(
+        { _id: updateChallengeDto.id },
+        {
+          name: updateChallengeDto.name,
+          participants: updateChallengeDto.participants,
+        },
+        { new: true },
+      )
+      .populate('participants');
+    this.logger.log({ updatedChallenge });
+    return updatedChallenge;
   }
 
   async deleteChallenge(challengeId: string) {

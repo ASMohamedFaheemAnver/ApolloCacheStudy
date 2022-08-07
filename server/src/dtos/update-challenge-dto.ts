@@ -1,5 +1,5 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
-import { IsString, MinLength } from 'class-validator';
+import { IsArray, IsString, MinLength } from 'class-validator';
 
 @InputType()
 export class UpdateChallengeDto {
@@ -12,6 +12,7 @@ export class UpdateChallengeDto {
   @Field()
   name: string;
 
-  @Field((_) => [ID!]!)
+  @IsArray()
+  @Field((_) => [ID])
   participants: string[];
 }
