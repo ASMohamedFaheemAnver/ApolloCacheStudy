@@ -5,6 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { join } from 'path';
 import { AppResolver } from './app.resolver';
 import { AppService } from './app.service';
+import { Challenge, ChallengeSchema } from './schemas/challenge.schema';
 import { User, UserSchema } from './schemas/user.schema';
 
 @Module({
@@ -15,7 +16,10 @@ import { User, UserSchema } from './schemas/user.schema';
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       playground: process.env.NODE_ENV !== 'prod',
     }),
-    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+    MongooseModule.forFeature([
+      { name: User.name, schema: UserSchema },
+      { name: Challenge.name, schema: ChallengeSchema },
+    ]),
   ],
   controllers: [],
   providers: [AppResolver, AppService],

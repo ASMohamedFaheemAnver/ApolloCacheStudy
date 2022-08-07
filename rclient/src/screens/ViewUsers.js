@@ -42,7 +42,7 @@ const ViewUsers = ({ setUser }) => {
                       query: GET_ALL_USERS_QUERY,
                       data: {
                         getAllUsers: cachedUsers?.filter(
-                          (cachedUser) => cachedUser._id != user?._id
+                          (cachedUser) => cachedUser._id !== user?._id
                         ),
                       },
                     });

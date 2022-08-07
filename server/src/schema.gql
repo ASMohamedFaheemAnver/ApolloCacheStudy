@@ -8,6 +8,12 @@ type User {
   age: Float!
 }
 
+type Challenge {
+  _id: ID!
+  name: String!
+  participants: [User!]!
+}
+
 type Message {
   message: String!
 }
@@ -15,12 +21,16 @@ type Message {
 type Query {
   root: Message!
   getAllUsers: [User!]!
+  getAllChallenges: [Challenge!]!
 }
 
 type Mutation {
   createUser(createUserDto: CreateUserDto!): User!
   updateUser(updateUserDto: UpdateUserDto!): User!
   deleteUser(userId: ID!): User!
+  createChallenge(createChallengeDto: CreateChallengeDto!): Challenge!
+  updateChallenge(updateChallengeDto: UpdateChallengeDto!): Challenge!
+  deleteChallenge(challengeId: ID!): Challenge!
 }
 
 input CreateUserDto {
@@ -31,4 +41,15 @@ input CreateUserDto {
 input UpdateUserDto {
   id: ID!
   age: Float!
+}
+
+input CreateChallengeDto {
+  name: String!
+  participants: [ID!]!
+}
+
+input UpdateChallengeDto {
+  id: ID!
+  name: String!
+  participants: [ID!]!
 }

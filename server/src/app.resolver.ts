@@ -2,8 +2,11 @@ import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { IsAlpha, isEmail, IsEmail } from 'class-validator';
 import { AppService } from './app.service';
 import { Message } from './common/message';
+import { CreateChallengeDto } from './dtos/create-challenge-dto';
 import { CreateUserDto } from './dtos/create-user-dto';
+import { UpdateChallengeDto } from './dtos/update-challenge-dto';
 import { UpdateUserDto } from './dtos/update-user-dto';
+import { Challenge } from './schemas/challenge.schema';
 import { User } from './schemas/user.schema';
 
 @Resolver()
@@ -18,6 +21,11 @@ export class AppResolver {
   @Query((_) => [User!]!)
   getAllUsers() {
     return this.appService.getAllUsers();
+  }
+
+  @Query((_) => [Challenge!]!)
+  getAllChallenges() {
+    return this.appService.getAllChallenges();
   }
 
   // Mutations
@@ -37,5 +45,27 @@ export class AppResolver {
     userId: string,
   ) {
     return this.appService.deleteUser(userId);
+  }
+
+  @Mutation((_) => Challenge)
+  createChallenge(
+    @Args('createChallengeDto') createChallengeDto: CreateChallengeDto,
+  ) {
+    return this.appService.createChallenge(createChallengeDto);
+  }
+
+  @Mutation((_) => Challenge)
+  updateChallenge(
+    @Args('updateChallengeDto') updateChallengeDto: UpdateChallengeDto,
+  ) {
+    return this.appService.updateChallenge(updateChallengeDto);
+  }
+
+  @Mutation((_) => Challenge)
+  deleteChallenge(
+    @Args('challengeId', { type: () => ID, nullable: false })
+    challengeId: string,
+  ) {
+    return this.appService.deleteChallenge(challengeId);
   }
 }
