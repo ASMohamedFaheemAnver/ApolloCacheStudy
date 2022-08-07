@@ -16,6 +16,9 @@ const ViewUsers = ({ setUser }) => {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
+              background: "gray",
+              marginBottom: 20,
+              padding: 5,
             }}
             key={user?._id}
           >

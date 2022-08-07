@@ -16,12 +16,26 @@ const ViewChallenges = ({ setChallenge }) => {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
+              background: "gray",
+              marginBottom: 20,
+              padding: 5,
             }}
             key={challenge?._id}
           >
             <label style={{ marginBottom: 20 }}>
               {challenge._id} , {challenge.name}
             </label>
+            <ul>
+              {challenge.participants.map((participant) => {
+                return (
+                  <div style={{ marginBottom: 20 }} key={participant._id}>
+                    <li>{participant._id}</li>
+                    <li>{participant.name}</li>
+                    <li>{participant.age}</li>
+                  </div>
+                );
+              })}
+            </ul>
             <button
               onClick={() => {
                 setChallenge(challenge);
