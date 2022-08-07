@@ -7,3 +7,16 @@
 # updateQuery
 # A function that enables you to update the query's cached result without executing a followup GraphQL operation.
 # https://www.apollographql.com/docs/react/data/queries/
+
+
+# Apollo Client delete Item from cache
+# https://stackoverflow.com/questions/63192774/apollo-client-delete-item-from-cache
+# https://www.apollographql.com/docs/react/caching/cache-interaction/
+cache.modify({
+  id: cache.identify(myPost),
+  fields: {
+    comments(existingCommentRefs, { DELETE }) {
+      return DELETE;
+    },
+  },
+});
