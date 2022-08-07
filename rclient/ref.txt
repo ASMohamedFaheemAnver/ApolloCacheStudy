@@ -3,3 +3,7 @@
 
 # Apollo GraphQL merge cached data
 # https://stackoverflow.com/questions/63123558/apollo-graphql-merge-cached-data?rq=1
+
+# updateQuery
+# A function that enables you to update the query's cached result without executing a followup GraphQL operation.
+# https://www.apollographql.com/docs/react/data/queries/

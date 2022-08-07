@@ -1,7 +1,7 @@
 import { useMutation } from "@apollo/client";
 import {
-    CREATE_USER_MUTATION,
-    UPDATE_USERS_MUTATION
+  CREATE_USER_MUTATION,
+  UPDATE_USERS_MUTATION,
 } from "graphql/mutations/user";
 import { GET_ALL_USERS_QUERY } from "graphql/queries/user";
 
@@ -45,6 +45,7 @@ const CreateOrEditUser = ({ user, setUser }) => {
                       data?.createUser,
                     ],
                   },
+                  // broadcast: false
                 });
               },
             });
