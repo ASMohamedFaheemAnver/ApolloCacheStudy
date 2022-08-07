@@ -23,11 +23,14 @@ export class AppService {
     return users;
   }
 
-  updateUser(updateUserDto: UpdateUserDto) {
+  async updateUser(updateUserDto: UpdateUserDto) {
     this.logger.log(this.updateUser.name, updateUserDto);
-    return this.userModel.findOneAndUpdate(
+    const updatedUser = await this.userModel.findOneAndUpdate(
       { _id: updateUserDto.id },
       { age: updateUserDto.age },
+      { new: true },
     );
+    this.logger.log(updatedUser);
+    return updatedUser;
   }
 }

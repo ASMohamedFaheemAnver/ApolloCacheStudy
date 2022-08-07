@@ -30,10 +30,12 @@ const CreateOrEditUser = ({ user, setUser }) => {
               variables: {
                 updateUserDto: { id: user._id, age: parseInt(age) },
               },
+              refetchQueries: [{ query: GET_ALL_USERS_QUERY }],
             });
           } else {
             createUserMutation({
               variables: { createUserDto: { name, age: parseInt(age) } },
+              refetchQueries: [{ query: GET_ALL_USERS_QUERY }],
             });
           }
         }}
