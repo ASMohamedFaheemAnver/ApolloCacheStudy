@@ -24,10 +24,10 @@ export class AppService {
   }
 
   updateUser(updateUserDto: UpdateUserDto) {
-    this.logger.log(this.getAllUsers.name, updateUserDto);
+    this.logger.log(this.updateUser.name, updateUserDto);
     return this.userModel.findOneAndUpdate(
-      { id: updateUserDto.id },
-      updateUserDto,
+      { _id: updateUserDto.id },
+      { age: updateUserDto.age },
     );
   }
 }

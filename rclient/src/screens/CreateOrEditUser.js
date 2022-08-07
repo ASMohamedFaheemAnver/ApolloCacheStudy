@@ -3,6 +3,7 @@ import {
   CREATE_USERS_MUTATION,
   UPDATE_USERS_MUTATION,
 } from "graphql/mutations/user";
+import { GET_ALL_USERS_QUERY } from "graphql/queries/user";
 
 const CreateOrEditUser = ({ user, setUser }) => {
   console.log({ invoker: CreateOrEditUser.name });
@@ -27,12 +28,14 @@ const CreateOrEditUser = ({ user, setUser }) => {
           if (typeof user?.age == "number") {
             updateUserMutation({
               variables: {
-                updateUserDto: { id: user._id, name, age: parseInt(age) },
+                updateUserDto: { id: user._id, age: parseInt(age) },
               },
+              refetchQueries: [{ query: GET_ALL_USERS_QUERY }],
             });
           } else {
             createUserMutation({
               variables: { createUserDto: { name, age: parseInt(age) } },
+              refetchQueries: [{ query: GET_ALL_USERS_QUERY }],
             });
           }
         }}
@@ -45,7 +48,11 @@ const CreateOrEditUser = ({ user, setUser }) => {
       >
         <div style={{ marginBottom: 20 }}>
           <label>Enter name : </label>
-          <input name="name" defaultValue={user?.name} />
+          <input
+            disabled={typeof user?.age == "number"}
+            name="name"
+            defaultValue={user?.name}
+          />
         </div>
         <div style={{ marginBottom: 20 }}>
           <label>Enter age : </label>

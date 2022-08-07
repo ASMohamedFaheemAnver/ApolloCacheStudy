@@ -7,16 +7,16 @@ export class UpdateUserDto {
   @Field(() => ID)
   id: string;
 
-  @ValidateIf((object, value) => {
-    return !object?.age || object?.name;
-  })
-  @IsString()
-  @Field()
-  name: string;
+  // @ValidateIf((object, value) => {
+  //   return !object?.age || object?.name;
+  // })
+  // @IsString()
+  // @Field()
+  // name: string;
 
-  @ValidateIf((object, value) => {
-    return !object?.name || object?.age;
-  })
+  // @ValidateIf((object, value) => {
+  //   return !object?.name || object?.age;
+  // })
   @IsNumber()
   @Field()
   age: number;
