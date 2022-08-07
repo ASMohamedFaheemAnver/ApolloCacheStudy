@@ -13,6 +13,9 @@ const client = new ApolloClient({
           getAllUsers: {
             merge: (existing, incoming) => incoming,
           },
+          getAllChallenges: {
+            merge: (existing, incoming) => incoming,
+          },
         },
       },
     },

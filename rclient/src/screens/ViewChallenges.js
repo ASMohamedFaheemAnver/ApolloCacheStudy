@@ -1,8 +1,11 @@
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
+import { DELETE_CHALLENGE_MUTATION } from "graphql/mutations/challenge";
 import { GET_ALL_CHALLENGES_QUERY } from "graphql/queries/challenge";
 
 const ViewChallenges = ({ setChallenge }) => {
   const { data } = useQuery(GET_ALL_CHALLENGES_QUERY);
+
+  const [deleteChallengeMutation] = useMutation(DELETE_CHALLENGE_MUTATION);
 
   return (
     <div style={{ marginTop: 20, marginBottom: 20 }}>
@@ -27,7 +30,28 @@ const ViewChallenges = ({ setChallenge }) => {
             >
               Edit
             </button>
-            <button onClick={() => {}} style={{ marginLeft: 5 }}>
+            <button
+              onClick={() => {
+                deleteChallengeMutation({
+                  variables: { challengeId: challenge?._id },
+                  update: (cache, { data }) => {
+                    const cachedChallenges = cache.readQuery({
+                      query: GET_ALL_CHALLENGES_QUERY,
+                    })?.getAllChallenges;
+                    cache.writeQuery({
+                      query: GET_ALL_CHALLENGES_QUERY,
+                      data: {
+                        getAllChallenges: cachedChallenges?.filter(
+                          (cachedChallenge) =>
+                            cachedChallenge._id !== challenge?._id
+                        ),
+                      },
+                    });
+                  },
+                });
+              }}
+              style={{ marginLeft: 5 }}
+            >
               Delete
             </button>
           </div>

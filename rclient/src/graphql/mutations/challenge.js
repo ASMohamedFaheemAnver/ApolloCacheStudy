@@ -20,3 +20,11 @@ export const UPDATE_CHALLENGE_MUTATION = gql`
     }
   }
 `;
+
+export const DELETE_CHALLENGE_MUTATION = gql`
+  mutation deleteChallenge($challengeId: ID!) {
+    deleteChallenge(challengeId: $challengeId) {
+      _id
+    }
+  }
+`;

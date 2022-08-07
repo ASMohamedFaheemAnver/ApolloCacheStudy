@@ -69,21 +69,26 @@ export class AppService {
     this.logger.log(this.updateChallenge.name, {
       updateChallengeDto,
     });
-    const updatedChallenge = await this.challengeModel
-      .findOneAndUpdate(
-        { _id: updateChallengeDto.id },
-        {
-          name: updateChallengeDto.name,
-          participants: updateChallengeDto.participants,
-        },
-        { new: true },
-      )
-      .populate('participants');
+    const updatedChallenge = await this.challengeModel.findOneAndUpdate(
+      { _id: updateChallengeDto.id },
+      {
+        name: updateChallengeDto.name,
+        participants: updateChallengeDto.participants,
+      },
+      { new: true },
+    );
+    // .populate('participants');
     this.logger.log({ updatedChallenge });
     return updatedChallenge;
   }
 
   async deleteChallenge(challengeId: string) {
     this.logger.log(this.deleteChallenge.name, { challengeId });
+    const response = await this.challengeModel.findOneAndDelete({
+      _id: challengeId,
+    });
+    this.logger.log({ response });
+    // return { message: 'deleted' };
+    return response;
   }
 }
