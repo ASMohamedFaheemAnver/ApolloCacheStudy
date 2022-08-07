@@ -39,6 +39,28 @@ const CreateOrEditChallenge = ({ challenge, setChallenge }) => {
                     .filter((participant) => participant),
                 },
               },
+              update: (cache, { data }) => {
+                const cachedChallenges = cache.readQuery({
+                  query: GET_ALL_CHALLENGES_QUERY,
+                });
+                cache.writeQuery({
+                  query: GET_ALL_CHALLENGES_QUERY,
+                  data: {
+                    getAllChallenges: [
+                      ...cachedChallenges?.getAllChallenges.map(
+                        (cachedChallenge) => {
+                          if (
+                            cachedChallenge._id === data.updateChallenge._id
+                          ) {
+                            return data.updateChallenge;
+                          }
+                          return cachedChallenge;
+                        }
+                      ),
+                    ],
+                  },
+                });
+              },
             });
           } else {
             createChallengeMutation({

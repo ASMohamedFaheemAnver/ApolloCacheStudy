@@ -17,6 +17,11 @@ export const UPDATE_CHALLENGE_MUTATION = gql`
     updateChallenge(updateChallengeDto: $updateChallengeDto) {
       _id
       name
+      participants {
+        _id
+        name
+        age
+      }
     }
   }
 `;

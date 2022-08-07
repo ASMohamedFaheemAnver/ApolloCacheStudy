@@ -69,15 +69,16 @@ export class AppService {
     this.logger.log(this.updateChallenge.name, {
       updateChallengeDto,
     });
-    const updatedChallenge = await this.challengeModel.findOneAndUpdate(
-      { _id: updateChallengeDto.id },
-      {
-        name: updateChallengeDto.name,
-        participants: updateChallengeDto.participants,
-      },
-      { new: true },
-    );
-    // .populate('participants');
+    const updatedChallenge = await this.challengeModel
+      .findOneAndUpdate(
+        { _id: updateChallengeDto.id },
+        {
+          name: updateChallengeDto.name,
+          participants: updateChallengeDto.participants,
+        },
+        { new: true },
+      )
+      .populate('participants');
     this.logger.log({ updatedChallenge });
     return updatedChallenge;
   }
