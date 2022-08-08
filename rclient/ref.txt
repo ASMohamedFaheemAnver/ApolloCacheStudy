@@ -20,3 +20,8 @@ cache.modify({
     },
   },
 });
+
+# ToDo
+
+# Queries with different variables are overwriting cached results
+# https://spectrum.chat/apollo/apollo-client/queries-with-different-variables-are-overwriting-cached-results~bd01179f-b160-428c-a5a7-d10e4f253e7e
