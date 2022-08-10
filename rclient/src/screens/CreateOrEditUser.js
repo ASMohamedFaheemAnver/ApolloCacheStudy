@@ -34,21 +34,33 @@ const CreateOrEditUser = ({ user, setUser }) => {
             createUserMutation({
               variables: { createUserDto: { name, age: parseInt(age) } },
               update: (cache, { data }) => {
-                const cachedUsers = cache.readQuery({
-                  // variables: { ageDivider: 40 },
-                  query: GET_ALL_USERS_QUERY,
-                });
-                cache.writeQuery({
-                  query: GET_ALL_USERS_QUERY,
-                  // variables: { ageDivider: 40 },
-                  data: {
-                    getAllUsers: [
-                      ...cachedUsers?.getAllUsers,
-                      data?.createUser,
-                    ],
-                  },
-                  // broadcast: false
-                });
+                // const cachedUsers = cache.readQuery({
+                //   // variables: { ageDivider: 40 },
+                //   query: GET_ALL_USERS_QUERY,
+                // });
+                // cache.writeQuery({
+                //   query: GET_ALL_USERS_QUERY,
+                //   // variables: { ageDivider: 40 },
+                //   data: {
+                //     getAllUsers: [
+                //       ...cachedUsers?.getAllUsers,
+                //       data?.createUser,
+                //     ],
+                //   },
+                //   // broadcast: false
+                // });
+                cache.updateQuery(
+                  { query: GET_ALL_USERS_QUERY },
+                  (cachedUsers) => {
+                    console.log({ updateQueryCache: data });
+                    return {
+                      getAllUsers: [
+                        ...cachedUsers?.getAllUsers,
+                        data?.createUser,
+                      ],
+                    };
+                  }
+                );
               },
             });
           }
