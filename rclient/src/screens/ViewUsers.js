@@ -3,7 +3,9 @@ import { DELETE_USER_MUTATION } from "graphql/mutations/user";
 import { GET_ALL_USERS_QUERY } from "graphql/queries/user";
 
 const ViewUsers = ({ setUser }) => {
-  const { data } = useQuery(GET_ALL_USERS_QUERY);
+  const { data } = useQuery(GET_ALL_USERS_QUERY, {
+    // variables: { ageDivider: 40 },
+  });
 
   const [deleteUserMutation] = useMutation(DELETE_USER_MUTATION);
 

@@ -1,5 +1,4 @@
-import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { IsAlpha, isEmail, IsEmail } from 'class-validator';
+import { Args, ID, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { AppService } from './app.service';
 import { Message } from './common/message';
 import { CreateChallengeDto } from './dtos/create-challenge-dto';
@@ -19,8 +18,11 @@ export class AppResolver {
   }
 
   @Query((_) => [User!]!)
-  getAllUsers() {
-    return this.appService.getAllUsers();
+  getAllUsers(
+    @Args('ageDivider', { type: () => Int, nullable: true })
+    ageDivider: number,
+  ) {
+    return this.appService.getAllUsers(ageDivider);
   }
 
   @Query((_) => [Challenge!]!)

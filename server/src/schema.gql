@@ -20,7 +20,7 @@ type Message {
 
 type Query {
   root: Message!
-  getAllUsers: [User!]!
+  getAllUsers(ageDivider: Int): [User!]!
   getAllChallenges: [Challenge!]!
 }
 

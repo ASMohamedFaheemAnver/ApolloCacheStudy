@@ -1,7 +1,7 @@
 import { useMutation } from "@apollo/client";
 import {
-  CREATE_CHALLENGE_MUTATION,
-  UPDATE_CHALLENGE_MUTATION,
+    CREATE_CHALLENGE_MUTATION,
+    UPDATE_CHALLENGE_MUTATION
 } from "graphql/mutations/challenge";
 import { GET_ALL_CHALLENGES_QUERY } from "graphql/queries/challenge";
 import { useEffect } from "react";

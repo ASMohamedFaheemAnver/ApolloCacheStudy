@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { FilterQuery, Model } from 'mongoose';
 import { CreateChallengeDto } from './dtos/create-challenge-dto';
 import { CreateUserDto } from './dtos/create-user-dto';
 import { UpdateChallengeDto } from './dtos/update-challenge-dto';
@@ -23,9 +23,13 @@ export class AppService {
     return newUser.save();
   }
 
-  async getAllUsers() {
+  async getAllUsers(ageDivider: number) {
     this.logger.log(this.getAllUsers.name);
-    const users = await this.userModel.find().exec();
+    let filter: FilterQuery<User> = {};
+    if (ageDivider) {
+      filter = { age: { $gt: ageDivider } };
+    }
+    const users = await this.userModel.find(filter).exec();
     this.logger.log(users);
     return users;
   }
