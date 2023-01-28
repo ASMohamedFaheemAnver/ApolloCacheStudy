@@ -18,9 +18,21 @@ type Message {
   message: String!
 }
 
+type PaginatorInfo {
+  page: Float!
+  size: Float!
+  total: Float!
+}
+
+type PaginatedUsers {
+  users: [User!]!
+  info: PaginatorInfo!
+}
+
 type Query {
   root: Message!
   getAllUsers(ageDivider: Int): [User!]!
+  getPaginatedUsers: PaginatedUsers!
   getAllChallenges: [Challenge!]!
 }
 

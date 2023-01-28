@@ -3,6 +3,7 @@ import { AppService } from './app.service';
 import { Message } from './common/message';
 import { CreateChallengeDto } from './dtos/create-challenge-dto';
 import { CreateUserDto } from './dtos/create-user-dto';
+import { PaginatedUsers } from './dtos/paginated-users';
 import { UpdateChallengeDto } from './dtos/update-challenge-dto';
 import { UpdateUserDto } from './dtos/update-user-dto';
 import { Challenge } from './schemas/challenge.schema';
@@ -23,6 +24,11 @@ export class AppResolver {
     ageDivider: number,
   ) {
     return this.appService.getAllUsers(ageDivider);
+  }
+
+  @Query((_) => PaginatedUsers)
+  getPaginatedUsers() {
+    return this.appService.getPaginatedUsers();
   }
 
   @Query((_) => [Challenge!]!)

@@ -9,3 +9,20 @@ export const GET_ALL_USERS_QUERY = gql`
     }
   }
 `;
+
+export const GET_PAGINATED_USERS_QUERY = gql`
+  query {
+    getPaginatedUsers {
+      users {
+        _id
+        name
+        age
+      }
+      info {
+        page
+        size
+        total
+      }
+    }
+  }
+`;

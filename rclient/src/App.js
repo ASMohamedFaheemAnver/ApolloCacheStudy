@@ -2,9 +2,10 @@ import { ApolloProvider } from "@apollo/client";
 import client from "client";
 import { useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import CreateOrEditPaginatedUser from "screens/CreateOrEditPaginatedUser";
 import CreateOrEditUser from "screens/CreateOrEditUser";
+import PaginatedViewUsers from "screens/PaginatedViewUsers";
 import Root from "screens/Root";
-import ViewUsers from "screens/ViewUsers";
 
 function App() {
   const [user, setUser] = useState();
@@ -26,8 +27,8 @@ function App() {
                 >
                   Paginated user Component
                 </div>
-                <ViewUsers setUser={setUser} />
-                <CreateOrEditUser setUser={setUser} user={user} />
+                <PaginatedViewUsers setUser={setUser} />
+                <CreateOrEditPaginatedUser setUser={setUser} user={user} />
               </>
             }
           />

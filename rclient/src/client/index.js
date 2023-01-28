@@ -23,6 +23,16 @@ const client = new ApolloClient({
           getAllChallenges: {
             merge: (existing, incoming) => incoming,
           },
+          getAllChallenges: {
+            merge: (existing, incoming) => incoming,
+          },
+          getPaginatedUsers: {
+            merge(existing, incoming) {
+              return {
+                ...incoming,
+              };
+            },
+          },
         },
       },
     },

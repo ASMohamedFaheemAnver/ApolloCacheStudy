@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { FilterQuery, Model } from 'mongoose';
 import { CreateChallengeDto } from './dtos/create-challenge-dto';
 import { CreateUserDto } from './dtos/create-user-dto';
+import { PaginatedUsers } from './dtos/paginated-users';
 import { UpdateChallengeDto } from './dtos/update-challenge-dto';
 import { UpdateUserDto } from './dtos/update-user-dto';
 import { Challenge, ChallengeDocument } from './schemas/challenge.schema';
@@ -32,6 +33,29 @@ export class AppService {
     const users = await this.userModel.find(filter).exec();
     this.logger.log(users);
     return users;
+  }
+
+  async getPaginatedUsers() {
+    this.logger.log(this.getPaginatedUsers.name);
+    const [{ users, info }] = await this.userModel.aggregate([
+      {
+        $match: {},
+      },
+      {
+        $facet: {
+          users: [{ $limit: 2 }],
+          info: [{ $count: 'total' }],
+        },
+      },
+      {
+        $project: {
+          users: 1,
+          info: { $ifNull: [{ $arrayElemAt: ['$info', 0] }, { total: 0 }] },
+        },
+      },
+    ]);
+    this.logger.log(this.getPaginatedUsers.name, { users, info });
+    return { users, info: { ...info, size: 2, page: 1 } };
   }
 
   async updateUser(updateUserDto: UpdateUserDto) {
