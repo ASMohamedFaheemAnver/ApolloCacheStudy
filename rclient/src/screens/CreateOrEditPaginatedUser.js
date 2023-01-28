@@ -5,7 +5,12 @@ import {
 } from "graphql/mutations/user";
 import { GET_PAGINATED_USERS_QUERY } from "graphql/queries/user";
 
-const CreateOrEditPaginatedUser = ({ user, setUser }) => {
+const CreateOrEditPaginatedUser = ({
+  user,
+  setUser,
+  currentPage,
+  pageSize,
+}) => {
   console.log({ invoker: CreateOrEditPaginatedUser.name });
   const [createUserMutation, { data, error }] =
     useMutation(CREATE_USER_MUTATION);
@@ -35,7 +40,15 @@ const CreateOrEditPaginatedUser = ({ user, setUser }) => {
               variables: { createUserDto: { name, age: parseInt(age) } },
               update: (cache, { data }) => {
                 cache.updateQuery(
-                  { query: GET_PAGINATED_USERS_QUERY },
+                  {
+                    query: GET_PAGINATED_USERS_QUERY,
+                    variables: {
+                      paginationDto: {
+                        page: currentPage,
+                        size: pageSize,
+                      },
+                    },
+                  },
                   (cachedPaginatedUsers) => {
                     return {
                       getPaginatedUsers: {

@@ -9,6 +9,8 @@ import Root from "screens/Root";
 
 function App() {
   const [user, setUser] = useState();
+  const [pageSize, setPageSize] = useState(2);
+  const [currentPage, setCurrentPage] = useState(1);
   return (
     <ApolloProvider client={client}>
       <Router>
@@ -27,8 +29,17 @@ function App() {
                 >
                   Paginated user Component
                 </div>
-                <PaginatedViewUsers setUser={setUser} />
-                <CreateOrEditPaginatedUser setUser={setUser} user={user} />
+                <PaginatedViewUsers
+                  setUser={setUser}
+                  currentPage={currentPage}
+                  pageSize={pageSize}
+                />
+                <CreateOrEditPaginatedUser
+                  currentPage={currentPage}
+                  pageSize={pageSize}
+                  setUser={setUser}
+                  user={user}
+                />
               </>
             }
           />

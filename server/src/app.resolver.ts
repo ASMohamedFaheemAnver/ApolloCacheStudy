@@ -4,6 +4,7 @@ import { Message } from './common/message';
 import { CreateChallengeDto } from './dtos/create-challenge-dto';
 import { CreateUserDto } from './dtos/create-user-dto';
 import { PaginatedUsers } from './dtos/paginated-users';
+import { PaginationDto } from './dtos/pagination-dto';
 import { UpdateChallengeDto } from './dtos/update-challenge-dto';
 import { UpdateUserDto } from './dtos/update-user-dto';
 import { Challenge } from './schemas/challenge.schema';
@@ -27,7 +28,7 @@ export class AppResolver {
   }
 
   @Query((_) => PaginatedUsers)
-  getPaginatedUsers() {
+  getPaginatedUsers(@Args('paginationDto') paginationDto: PaginationDto) {
     return this.appService.getPaginatedUsers();
   }
 

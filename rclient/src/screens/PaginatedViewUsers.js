@@ -1,13 +1,17 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { DELETE_USER_MUTATION } from "graphql/mutations/user";
-import {
-  GET_ALL_USERS_QUERY,
-  GET_PAGINATED_USERS_QUERY,
-} from "graphql/queries/user";
+import { GET_PAGINATED_USERS_QUERY } from "graphql/queries/user";
+import { useState } from "react";
 
-const PaginatedViewUsers = ({ setUser }) => {
-  const { data } = useQuery(GET_PAGINATED_USERS_QUERY);
-  console.log({ data });
+const PaginatedViewUsers = ({ setUser, currentPage, pageSize }) => {
+  const { data } = useQuery(GET_PAGINATED_USERS_QUERY, {
+    variables: {
+      paginationDto: {
+        page: currentPage,
+        size: pageSize,
+      },
+    },
+  });
 
   const [deleteUserMutation] = useMutation(DELETE_USER_MUTATION);
 
@@ -44,9 +48,21 @@ const PaginatedViewUsers = ({ setUser }) => {
                   update: (cache, { data }) => {
                     const cachedPaginatedUsers = cache.readQuery({
                       query: GET_PAGINATED_USERS_QUERY,
+                      variables: {
+                        paginationDto: {
+                          page: currentPage,
+                          size: pageSize,
+                        },
+                      },
                     })?.getPaginatedUsers;
                     cache.writeQuery({
                       query: GET_PAGINATED_USERS_QUERY,
+                      variables: {
+                        paginationDto: {
+                          page: currentPage,
+                          size: pageSize,
+                        },
+                      },
                       data: {
                         getPaginatedUsers: {
                           ...cachedPaginatedUsers,

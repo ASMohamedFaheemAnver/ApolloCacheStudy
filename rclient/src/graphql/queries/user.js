@@ -11,8 +11,8 @@ export const GET_ALL_USERS_QUERY = gql`
 `;
 
 export const GET_PAGINATED_USERS_QUERY = gql`
-  query {
-    getPaginatedUsers {
+  query getPaginatedUsers($paginationDto: PaginationDto!) {
+    getPaginatedUsers(paginationDto: $paginationDto) {
       users {
         _id
         name

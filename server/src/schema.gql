@@ -32,8 +32,13 @@ type PaginatedUsers {
 type Query {
   root: Message!
   getAllUsers(ageDivider: Int): [User!]!
-  getPaginatedUsers: PaginatedUsers!
+  getPaginatedUsers(paginationDto: PaginationDto!): PaginatedUsers!
   getAllChallenges: [Challenge!]!
+}
+
+input PaginationDto {
+  page: Float
+  size: Float
 }
 
 type Mutation {
