@@ -29,7 +29,7 @@ export class AppResolver {
 
   @Query((_) => PaginatedUsers)
   getPaginatedUsers(@Args('paginationDto') paginationDto: PaginationDto) {
-    return this.appService.getPaginatedUsers();
+    return this.appService.getPaginatedUsers(paginationDto);
   }
 
   @Query((_) => [Challenge!]!)

@@ -1,19 +1,68 @@
-import { useMutation, useQuery } from "@apollo/client";
+import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import { DELETE_USER_MUTATION } from "graphql/mutations/user";
 import { GET_PAGINATED_USERS_QUERY } from "graphql/queries/user";
-import { useState } from "react";
+import { useEffect } from "react";
 
-const PaginatedViewUsers = ({ setUser, currentPage, pageSize }) => {
-  const { data } = useQuery(GET_PAGINATED_USERS_QUERY, {
-    variables: {
-      paginationDto: {
-        page: currentPage,
-        size: pageSize,
-      },
-    },
-  });
+const PaginatedViewUsers = ({
+  setUser,
+  currentPage,
+  pageSize,
+  setPageSize,
+  setCurrentPage,
+}) => {
+  const [getPaginatedUsers, { data, loading, fetchMore }] = useLazyQuery(
+    GET_PAGINATED_USERS_QUERY
+  );
 
   const [deleteUserMutation] = useMutation(DELETE_USER_MUTATION);
+  const info = data?.getPaginatedUsers?.info;
+  const isLastPage =
+    info?.total / (info?.page * info?.size) <= 1 ? true : false;
+  console.log({ isLastPage, info });
+
+  useEffect(() => {
+    if (info) {
+      setCurrentPage(info?.page);
+      setPageSize(info?.size);
+    }
+  }, [info]);
+
+  useEffect(() => {
+    getPaginatedUsers({
+      variables: {
+        paginationDto: {
+          page: currentPage,
+          size: pageSize,
+        },
+      },
+    });
+  }, []);
+
+  const onFetchMoreUser = () => {
+    fetchMore({
+      variables: {
+        paginationDto: {
+          page: info?.page + 1,
+          size: info?.size,
+        },
+      },
+      updateQuery: (prev, { fetchMoreResult }) => {
+        if (!fetchMoreResult) return prev;
+        const users = [
+          ...prev?.getPaginatedUsers?.users,
+          ...fetchMoreResult?.getPaginatedUsers?.users,
+        ];
+        const info = fetchMoreResult?.getPaginatedUsers?.info;
+        return {
+          ...prev,
+          getPaginatedUsers: {
+            users,
+            info,
+          },
+        };
+      },
+    });
+  };
 
   return (
     <div style={{ marginTop: 20, marginBottom: 20 }}>
@@ -82,6 +131,17 @@ const PaginatedViewUsers = ({ setUser, currentPage, pageSize }) => {
           </div>
         );
       })}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <button disabled={isLastPage || loading} onClick={onFetchMoreUser}>
+          Load More
+        </button>
+      </div>
     </div>
   );
 };

@@ -3,7 +3,6 @@ import client from "client";
 import { useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import CreateOrEditPaginatedUser from "screens/CreateOrEditPaginatedUser";
-import CreateOrEditUser from "screens/CreateOrEditUser";
 import PaginatedViewUsers from "screens/PaginatedViewUsers";
 import Root from "screens/Root";
 
@@ -33,6 +32,8 @@ function App() {
                   setUser={setUser}
                   currentPage={currentPage}
                   pageSize={pageSize}
+                  setPageSize={setPageSize}
+                  setCurrentPage={setCurrentPage}
                 />
                 <CreateOrEditPaginatedUser
                   currentPage={currentPage}

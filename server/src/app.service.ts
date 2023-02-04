@@ -4,6 +4,7 @@ import { FilterQuery, Model } from 'mongoose';
 import { CreateChallengeDto } from './dtos/create-challenge-dto';
 import { CreateUserDto } from './dtos/create-user-dto';
 import { PaginatedUsers } from './dtos/paginated-users';
+import { PaginationDto } from './dtos/pagination-dto';
 import { UpdateChallengeDto } from './dtos/update-challenge-dto';
 import { UpdateUserDto } from './dtos/update-user-dto';
 import { Challenge, ChallengeDocument } from './schemas/challenge.schema';
@@ -35,15 +36,26 @@ export class AppService {
     return users;
   }
 
-  async getPaginatedUsers() {
+  async getPaginatedUsers(paginationDto: PaginationDto) {
     this.logger.log(this.getPaginatedUsers.name);
+    console.log({
+      skip: paginationDto.page * paginationDto.size,
+      limit: paginationDto.size,
+    });
     const [{ users, info }] = await this.userModel.aggregate([
       {
         $match: {},
       },
       {
         $facet: {
-          users: [{ $limit: 2 }],
+          users: [
+            {
+              $skip: (paginationDto.page - 1) * paginationDto.size,
+            },
+            {
+              $limit: paginationDto.size,
+            },
+          ],
           info: [{ $count: 'total' }],
         },
       },
@@ -55,7 +67,7 @@ export class AppService {
       },
     ]);
     this.logger.log(this.getPaginatedUsers.name, { users, info });
-    return { users, info: { ...info, size: 2, page: 1 } };
+    return { users, info: { ...info, ...paginationDto } };
   }
 
   async updateUser(updateUserDto: UpdateUserDto) {
